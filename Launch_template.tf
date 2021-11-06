@@ -1,5 +1,5 @@
 data "aws_ssm_parameter" "cluster" {
-  name = "/aws/service/eks/optimized-ami/${module.eks_cluster.version}/amazon-linux-2/recommended/image_id"
+  name = "/aws/service/eks/optimized-ami/${module.eks_cluster.eks_cluster_version}/amazon-linux-2/recommended/image_id"
 }
 
 data "aws_launch_template" "cluster" {
