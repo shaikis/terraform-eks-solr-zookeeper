@@ -14,15 +14,15 @@ module "zookeeper-node-group" {
   node_role_arn      = module.eks_cluster.eks_node_arn
   create_iam_role    = false
 
-  ami_type           = "AL2_x86_64_GPU"
+  ami_type           = "CUSTOM"
   desired_size       = 1
   min_size           = 1
   max_size           = 1
 
-  instance_types     = ["t3a.large","t3a.large"]
+  #instance_types     = ["t3a.large","t3a.large"]
   capacity_type      = "SPOT"
   
-  ec2_ssh_key        = "eks-test"
+  #ec2_ssh_key        = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDrzxQpN12frrUi+PtX4CZnyd+TJTJJjACTqhpM6cl4jiW+NX+ojkCGPI4o1mtR925UPmQebPYSOf1Ldk+RbRMFn7uA9zKjIe+z9OA7u9zAlZoO/+mJ7ug/w+jdUWPmWW0/lvVJAVWlYljtzC4Mp/Pf4LClxyXroKS/uB2IN2J1M3HLAOBGy3s2ZY6/32adKPc8iMT1IORxSvNQr4brIl+U3xJth5BrJzIb0VUsdZoU5pF/nswUOPAFUsYcpLEh6DMjaerJ70blF8sWOSxFU6mBLlWKaojsz60SJSOhaCvcmWCsnYFohTkvKd6+pJQiX1El8FkbpH3l++cshvqienDl root@master.example.com"
 
   launch_template    = {
     id      = data.aws_launch_template.cluster.id
@@ -48,15 +48,15 @@ module "solr-node-group" {
 
   node_role_arn     = module.eks_cluster.eks_node_arn
   create_iam_role   = false
-  ami_type          = "AL2_x86_64_GPU"
+  ami_type          = "CUSTOM"
   desired_size      = 1
   min_size          = 1
   max_size          = 1
 
-  instance_types    = ["t3a.large","t3a.large"]
+  #instance_types    = ["t3a.large","t3a.large"]
   capacity_type     = "SPOT"
   
-   ec2_ssh_key      = "eks-test"
+  #ec2_ssh_key      = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDrzxQpN12frrUi+PtX4CZnyd+TJTJJjACTqhpM6cl4jiW+NX+ojkCGPI4o1mtR925UPmQebPYSOf1Ldk+RbRMFn7uA9zKjIe+z9OA7u9zAlZoO/+mJ7ug/w+jdUWPmWW0/lvVJAVWlYljtzC4Mp/Pf4LClxyXroKS/uB2IN2J1M3HLAOBGy3s2ZY6/32adKPc8iMT1IORxSvNQr4brIl+U3xJth5BrJzIb0VUsdZoU5pF/nswUOPAFUsYcpLEh6DMjaerJ70blF8sWOSxFU6mBLlWKaojsz60SJSOhaCvcmWCsnYFohTkvKd6+pJQiX1El8FkbpH3l++cshvqienDl root@master.example.com"
 
   launch_template   = {
     id      = data.aws_launch_template.cluster.id

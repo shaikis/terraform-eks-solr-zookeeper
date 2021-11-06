@@ -7,13 +7,21 @@ data "aws_launch_template" "cluster" {
   depends_on = [aws_launch_template.cluster]
 }
 
+resource "aws_key_pair" "key_pair" {
+  count           = var.create_key_pair ? 1 : 0
+  key_name        = var.key_pair_name
+  public_key      = var.public_key
+
+  tags = var.tags
+}
+
 resource "aws_launch_template" "cluster" {
   image_id               = data.aws_ssm_parameter.cluster.value
   instance_type          = "t3.medium"
   name                   = "eks-launch-template-test"
   update_default_version = true
 
-  key_name = "eks-test"
+  key_name = aws_key_pair.key_pair.0.id
 
   block_device_mappings {
     device_name = "/dev/sda1"
