@@ -20,8 +20,8 @@ resource "aws_eks_node_group" "worker-node-group" {
   subnet_ids      = var.private_subnet_ids    # concat(sort(data.aws_subnet_ids.private.ids))
 
   launch_template {
-   name = aws_launch_template.bottlerocket_lt.name
-   version = aws_launch_template.bottlerocket_lt.latest_version
+   name = aws_launch_template.nodegroupt_lt.name
+   version = aws_launch_template.nodegroup_lt.latest_version
 }
 
   scaling_config {
@@ -30,7 +30,7 @@ resource "aws_eks_node_group" "worker-node-group" {
     min_size     = var.worker_min_size
   }
 
-depends_on = [aws_launch_template.bottlerocket_lt,
+depends_on = [aws_launch_template.nodegroup_lt,
              local_file.aws_auth_configmap
 ]
 lifecycle {

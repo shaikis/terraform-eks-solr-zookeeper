@@ -1,5 +1,5 @@
 ############################ Launch template variables
-variable "bottlerocket" {
+variable "nodegroup" {
   type        = bool
   default     = true
   description = "Use Bottlerocket OS, rather than Amazon Linux"
@@ -18,7 +18,7 @@ variable "taints" {
 }
 
 
-variable "bottlerocket_admin_source" {
+variable "nodegroup_admin_source" {
   type        = string
   default     = ""
   description = "The URI of the control container"

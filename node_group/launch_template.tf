@@ -1,17 +1,17 @@
 locals {
  instance_profile_arn = aws_iam_role.managed_workers
- root_device_mappings = tolist(data.aws_ami.bottlerocket_image.block_device_mappings)[0]
+ root_device_mappings = tolist(data.aws_ami.nodegroup_image.block_device_mappings)[0]
  autoscaler_tags      = var.cluster_autoscaler ? { "k8s.io/cluster-autoscaler/enabled" = "true", "k8s.io/cluster-autoscaler/${var.name}" = "owned" } : {}
- bottlerocket_tags    = { "Name" = "eks-node-aws_eks_cluster.cluster.name" }
- tags                 = merge(var.tags, { "kubernetes.io/cluster/${var.name}" = "owned"}, local.autoscaler_tags, local.bottlerocket_tags)
+ nodegroup_tags    = { "Name" = "eks-node-aws_eks_cluster.cluster.name" }
+ tags                 = merge(var.tags, { "kubernetes.io/cluster/${var.name}" = "owned"}, local.autoscaler_tags, local.nodegroup_tags)
  labels = merge(
     var.labels
  )
 }
 
-data "template_file" "bottlerocket_config" {
-  #template = file("${path.root}/templates/bottlerocket_config.toml.tpl")
-  template = file("../node_group/templates/bottlerocket_config.toml.tpl")
+data "template_file" "nodegroup_config" {
+  #template = file("${path.root}/templates/nodegroup_config.toml.tpl")
+  template = file("../node_group/templates/nodegroup_config.toml.tpl")
   vars = {
     cluster_name                 =  var.cluster_name
     cluster_endpoint             =  var.cluster_endpoint
@@ -20,24 +20,24 @@ data "template_file" "bottlerocket_config" {
     node_taints                  = join("\n", [for taint, value in var.taints : "\"${taint}\" = \"${value}\""])
     admin_container_enabled      = true
     admin_container_superpowered = true
-    admin_container_source       = var.bottlerocket_admin_source
+    admin_container_source       = var.nodegroup_admin_source
   }
 }
 
-data "aws_ssm_parameter" "bottlerocket_image_id" {
+data "aws_ssm_parameter" "nodegroup_image_id" {
   name = "/aws/service/bottlerocket/aws-k8s-${var.eks_version}/x86_64/latest/image_id"
 }
 
-data "aws_ami" "bottlerocket_image" {
+data "aws_ami" "nodegroup_image" {
   owners = ["amazon"]
   filter {
     name   = "image-id"
-    values = [data.aws_ssm_parameter.bottlerocket_image_id.value]
+    values = [data.aws_ssm_parameter.nodegroup_image_id.value]
   }
 }
 
 
-resource "aws_launch_template" "bottlerocket_lt" {
+resource "aws_launch_template" "nodegroup_lt" {
   name_prefix            = var.name
   update_default_version = true
   block_device_mappings {
@@ -61,8 +61,8 @@ resource "aws_launch_template" "bottlerocket_lt" {
     delete_on_termination       = true
   }
 
-   image_id      = data.aws_ami.bottlerocket_image.id 
-   user_data     = base64encode(data.template_file.bottlerocket_config.rendered)
+   image_id      = data.aws_ami.nodegroup_image.id 
+   user_data     = base64encode(data.template_file.nodegroup_config.rendered)
 
  tag_specifications {
     resource_type = "instance"

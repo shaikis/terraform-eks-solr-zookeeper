@@ -1,5 +1,5 @@
 output "launch_template_name" {
-  value = aws_launch_template.bottlerocket_lt.name_prefix
+  value = aws_launch_template.nodegroup_lt.name_prefix
 }
 
 # Node group output variables
