@@ -8,3 +8,4 @@ Actual plan will be installing  zookeeper and solr on EKS nodes.
 cd terraform-eks-solr-zookeeper
 ./run_terraform.sh  # this will do terraform init , plan
 ./run_apply.sh      # this will do terraform apply
+![Arch](https://github.com/shaikis/terraform-eks-solr-zookeeper/blob/main/snapshots/Apache_zookeeper_solr.png)
